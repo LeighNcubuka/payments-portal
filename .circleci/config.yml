@@ -3,21 +3,13 @@ version: 2.1
 jobs:
   build-and-test-frontend:
     docker:
-      - image: cimg/node:18.16
-    working_directory: ~/project/frontend
+      - image: cimg/node:20.0
+    working_directory: ~/project/frontend  # Adjust if needed (e.g., ~/project/payments-portal/frontend)
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
       - run:
           name: Install Frontend Dependencies
           command: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: Build Frontend
           command: npm run build
@@ -27,21 +19,13 @@ jobs:
 
   build-and-test-backend:
     docker:
-      - image: cimg/node:18.16
-    working_directory: ~/project/backend
+      - image: cimg/node:20.0
+    working_directory: ~/project/backend  # Adjust if needed (e.g., ~/project/payments-portal/backend)
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-backend-dependencies-{{ checksum "package.json" }}
-            - v1-backend-dependencies-
       - run:
           name: Install Backend Dependencies
           command: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-backend-dependencies-{{ checksum "package.json" }}
       - run:
           name: Run Backend Tests
           command: npm test || true
